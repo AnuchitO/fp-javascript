@@ -41,7 +41,7 @@ const list2array = (xs) => {
   return result
 }
 /*
-const list2array = (xs) => { return tail (xs) != null ?  [head (xs), ...(list2array (tail (xs)))] : [ head (xs) ] }
+const list2array = (xs) => ( tail (xs) != null ?  [head (xs), ...(list2array (tail (xs)))] : [ head (xs) ] )
 */
 
 console.log("list2array:", list2array(xs))
