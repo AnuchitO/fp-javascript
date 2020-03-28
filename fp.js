@@ -57,6 +57,10 @@ const array2list = (arr) => {
   return result
 }
 
+/*
+const array2list = (arr) => ( arr.slice(1).length > 0 ? pair (arr[0]) (array2list (arr.slice(1))) : pair (arr[0]) (null))
+*/
+
 console.log("array2list:", array2list([1,2,3]))
 
 console.log("array2list(list2array (xs)):", array2list (list2array (xs)))
