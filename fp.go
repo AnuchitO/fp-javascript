@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func list2array(xs *Pair) []Value {
 	if tail(xs) == nil {
@@ -21,7 +24,21 @@ func array2list(vs []Value) *Pair {
 	return pair(hd, nil)
 }
 
-type Value int
+func V(v interface{}) Value {
+	return Value{v}
+}
+
+type Value struct {
+	value interface{}
+}
+
+func (v Value) toString() string {
+	return v.value.(string)
+}
+
+func (v Value) toInt() int {
+	return v.value.(int)
+}
 
 type Pair struct {
 	value  Value
@@ -48,7 +65,7 @@ func ranges(low, high int) *Pair {
 		return nil
 	}
 
-	return pair(Value(low), ranges(low+1, high))
+	return pair(V(low), ranges(low+1, high))
 }
 
 func maps(fn func(Value) Value, p *Pair) *Pair {
@@ -59,8 +76,24 @@ func maps(fn func(Value) Value, p *Pair) *Pair {
 	return pair(fn(head(p)), maps(fn, tail(p)))
 }
 
+func fizzbuzz(v Value) Value {
+	n := v.toInt()
+	if n%15 == 0 {
+		return V("fizzbuzz")
+	}
+	if n%5 == 0 {
+		return V("buzz")
+	}
+
+	if n%3 == 0 {
+		return V("fizz")
+	}
+
+	return V(strconv.Itoa(n))
+}
+
 func main() {
-	xs := pair(1, pair(2, pair(3, nil)))
+	xs := pair(V(1), pair(V(2), pair(V(3), nil)))
 	xss := ranges(1, 10)
 	fmt.Printf("xs : %#v\n", xs)
 	fmt.Printf("head : %#v\n", head(xs))
@@ -68,5 +101,6 @@ func main() {
 	fmt.Printf("ranges : %#v\n", xss)
 	fmt.Printf("list2array : %#v\n", list2array(xss))
 	fmt.Printf("array2list : %#v\n", array2list(list2array(xss)))
-	fmt.Printf("maps : %#v\n", maps(func(v Value) Value { return v * 2 }, xss))
+	fmt.Printf("maps : %#v\n", maps(func(v Value) Value { return V(v.toInt() * 2) }, xss))
+	fmt.Printf("fizzbuzz : %#v\n", list2array(maps(fizzbuzz, xss)))
 }
