@@ -93,10 +93,16 @@ console.log("list2array (map (fizzbuzz) (range (1) (20))):", fb)
 
 
 
+let co = (xs=[], ys=[]) => xs.length == 1 ? ys.map(y => [xs[0], y]) : [].concat.apply([], xs.map(x => (co ([x], ys))) )
+console.log(JSON.stringify(co ([1], [1,2,3])))
+console.log(JSON.stringify(co ([1,2], [1,2,3])))
+console.log(JSON.stringify(co ([1,2,3], [1,2,3])))
+console.log(JSON.stringify(co ([1,2,3,4], [1,2,3])))
 
+let series = (limit) => limit == 0 ? [] : [...(series(limit-1)) , limit]
 
-
-
+console.log(JSON.stringify(co (series(1), series(3))))
+console.log(JSON.stringify(co (series(3), series(2))))
 
 
 
