@@ -105,7 +105,9 @@ console.log(JSON.stringify(co (series(1), series(3))))
 console.log(JSON.stringify(co (series(3), series(2))))
 
 
-
+let rps = [...co (series(1), series(3)), ...co (series(3), series(2))]
+console.log(JSON.stringify(rps))
+rps.reduce( (prev, curr) => ({...prev, [curr]: (prev[curr] || 0 )+1 }) , {})
 
 
 
