@@ -59,7 +59,7 @@ console.log(
 )
 
 // // functional way: map array to array of object first, value, left, right
-let list2pair = (list) =>
+const list2pair = (list) =>
   list.map((value, index) => ({
     value,
     resolved: value,
@@ -79,4 +79,4 @@ const sum = (prev, item) => prev + Number(item.resolved)
 const list = ['1', '2', '<', '<', '>', '4']
 const result = list2pair(list).map(left).map(right).reduce(sum, 0)
 
-console.log('functional way:', result)
+console.log('sum arrow functional style:', result)
