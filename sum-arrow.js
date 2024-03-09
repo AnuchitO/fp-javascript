@@ -23,7 +23,7 @@
 */
 
 // imperative way: map array to array of object first, value, left, right
-function _array2pair(arr) {
+let arr2pair = (arr) => {
   let result = []
   for (let i = 0; i < arr.length; i++) {
     let first = arr[i]
@@ -35,44 +35,48 @@ function _array2pair(arr) {
   return result
 }
 
-// functional way: map array to array of object first, value, left, right
-const array2pair = (arr) =>
-  arr.map((value, index) => ({
-    first: value,
-    value,
-    left: [...arr.slice(0, index).reverse()],
-    right: [...arr.slice(index + 1)],
-  }))
-
-// const find = (arrow, predicate) =
-
-// TOOD: extract function
-// const isOk = (items, arrow) => {
-//   let firstNumber = items.find((v) => !isNaN(v))
-//   return {
-//     ...item,
-//     value: firstNumber,
-//   }
-// }
-
-let ps = array2pair(['1', '2', '<', '<', '>', '4']).map((p) => {
+let ps = arr2pair(['1', '2', '<', '<', '>', '4']).map((p) => {
   if (p.first === '>') {
-    let firstNumber = p.right.find((v) => !isNaN(v))
     return {
       ...p,
-      value: firstNumber,
+      value: p.right.find((v) => !isNaN(v)),
     }
   }
 
   if (p.first === '<') {
-    let firstNumber = p.left.find((v) => !isNaN(v))
     return {
       ...p,
-      value: firstNumber,
+      value: p.left.find((v) => !isNaN(v)),
     }
   }
 
   return p
 })
 console.log(ps)
-console.log(ps.reduce((prev, curr) => prev + Number(curr.value), 0))
+console.log(
+  'imperative:',
+  ps.reduce((prev, curr) => prev + Number(curr.value), 0)
+)
+
+// // functional way: map array to array of object first, value, left, right
+let list2pair = (list) =>
+  list.map((value, index) => ({
+    value,
+    resolved: value,
+    left: [...list.slice(0, index).reverse()],
+    right: [...list.slice(index + 1)],
+  }))
+
+const isOk = (arrow, item, next) => ({
+  ...item,
+  resolved: item.value === arrow ? next.find((v) => !isNaN(v)) : item.resolved,
+})
+
+const right = (item) => isOk('>', item, item.right)
+const left = (item) => isOk('<', item, item.left)
+const sum = (prev, item) => prev + Number(item.resolved)
+
+const list = ['1', '2', '<', '<', '>', '4']
+const result = list2pair(list).map(left).map(right).reduce(sum, 0)
+
+console.log('functional way:', result)
