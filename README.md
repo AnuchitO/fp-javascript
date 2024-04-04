@@ -1,4 +1,5 @@
 # Functional Programming
+
 1. No Loops
 1. No Ifs
 1. Function is a Single Return
